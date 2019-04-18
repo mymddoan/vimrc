@@ -5,6 +5,7 @@ set nocompatible              " be iMproved, required
 filetype off                  " required
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
+set rtp+=~/.fzf
 call vundle#begin()
 
 " let Vundle manage Vundle, required
@@ -13,7 +14,8 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'enricobacis/vim-airline-clock'
-set rtp+=~/.fzf
+Plugin 'wellle/targets.vim'
+
 "Colorscheme
 Plugin 'morhetz/gruvbox'
 Plugin 'drewtempelmeyer/palenight.vim'
