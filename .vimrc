@@ -1,5 +1,3 @@
-source $VIMRUNTIME/vimrc_example.vim
-
 " Plugin stuff
 set nocompatible              " be iMproved, required
 filetype off                  " required
@@ -11,16 +9,29 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
-Plugin 'vim-airline/vim-airline'
+"Status Bar"
+Plugin 'vim-airline/vim-airline' 
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'enricobacis/vim-airline-clock'
+
+Plugin 'mhinz/vim-startify'
+Plugin 'sheerun/vim-polyglot'
 Plugin 'wellle/targets.vim'
+Plugin 'tpope/vim-surround' 
+Plugin 'tpope/vim-commentary'
+Plugin 'wlemuel/vim-tldr'
 
-"Colorscheme
-Plugin 'morhetz/gruvbox'
-Plugin 'drewtempelmeyer/palenight.vim'
 Plugin 'chase/focuspoint-vim'
+"Language Specific Plugins"
+Plugin 'mxw/vim-jsx'
+Plugin 'fatih/vim-go'
 
+if v:version >= 8.0
+    Plugin 'prabirshrestha/async.vim'
+    Plugin 'prabirshrestha/vim-lsp'
+    Plugin 'prabirshrestha/asyncomplete.vim'
+    Plugin 'prabirshrestha/asyncomplete-lsp.vim'
+endif
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -55,7 +66,7 @@ set ignorecase smartcase
 " general behavior
 set number relativenumber
 set showmatch
-set clipboard=unnamedplus
+set clipboard^=unnamed,unnamedplus
 set linebreak
 set wildmenu
 set wildmode=longest,list
@@ -64,7 +75,7 @@ set hidden
 set laststatus=2
 set autoread
 set splitbelow splitright
-set nobackup noswapfile noundofile
+set nobackup noswapfile
 set tm=450
 
 " Don't offer to open certain files/directories
@@ -72,14 +83,14 @@ set wildignore+=*.bmp,*.gif,*.ico,*.jpg,*.png,*.ico
 set wildignore+=*.a,*.o
 set wildignore+=*~,*.swp,*.tmp
 
-colorscheme gruvbox
 set background=dark
 
 ""Plugin Settings
+let g:tldr_directory_path = '~/.cache/tldr'
 let g:palenight_terminal_italics=1
-let g:gruvbox_contrast_dark = 'hard'
 
-let g:airline_theme='deus'
+let g:airline_powerline_fonts = 0
+let g:airline_theme='alduin'
 
 let g:airline_left_sep=''
 let g:airline_right_sep=''
@@ -115,7 +126,7 @@ inoremap <leader>s <C-c>:w<cr>
 nnoremap <leader>q :q<cr>
 nnoremap <leader>w :mksession!<CR>
 nnoremap <leader>v :split $MYVIMRC<CR>
-nnoremap <leader>vv :so %<CR>
+nnoremap <leader>f :LspDocumentDiagnostic<CR>
 nnoremap <leader>M :%s/\s\+$//<cr>:let @/=''<CR>
 set pastetoggle=<leader>z
 
@@ -129,9 +140,14 @@ inoremap <silent> <ESC>OB <DOWN>
 inoremap <silent> <ESC>OC <RIGHT>
 inoremap <silent> <ESC>OD <LEFT>
 
+"Fix for cursor/terminal
+let &t_ti.="\e[1 q"
+let &t_SI.="\e[5 q"
+let &t_EI.="\e[1 q"
+let &t_te.="\e[0 q"
 " switch tabs with tabs and buffers with Ctrl
-nnoremap <Tab> :tabnext<CR>
-nnoremap <S-Tab> :tabprevious<CR>
+nnoremap <C-Down> <ESC>:tabnext<CR>
+nnoremap <C-Up> :tabprevious<CR>
 nnoremap <C-RIGHT> :bn<CR>
 nnoremap <C-LEFT> :bp<CR>
 
@@ -139,7 +155,7 @@ nnoremap <C-LEFT> :bp<CR>
 nnoremap <S-Right> :vertical resize +5<CR>
 nnoremap <S-Left> :vertical resize -5<CR>
 nnoremap <S-Up> :res +5<CR>
-nnoremap <S-Down> :res -5<CR> 
+nnoremap <S-Down> :res -5<CR>
 
 " switch split focus
 nnoremap <C-j> <C-W>j
@@ -155,9 +171,10 @@ nnoremap <F5> :make<CR>
 " qq to record, Q to replay
 nnoremap Q @q
 "For tabbing to shift text
-inoremap <S-Tab> <C-d>
+"inoremap <S-Tab> <C-d>
 vnoremap <Tab> >gv
 vnoremap <S-Tab> <gv
+
 
 nnoremap - $
 nnoremap j gj
@@ -208,3 +225,40 @@ nnoremap <F8> :call <SID>rotate_colors()<cr>
 
 " Automatically source vimrc on save.
 autocmd! bufwritepost $MYVIMRC source $MYVIMRC
+
+if executable('pyls')
+  " pip install python-language-server
+  augroup LspPython
+    au!
+    autocmd User lsp_setup call lsp#register_server({
+        \ 'name': 'pyls',
+        \ 'cmd': {server_info->['pyls']},
+        \ 'whitelist': ['python'],
+        \ })
+    autocmd FileType python setlocal omnifunc=lsp#complete
+  augroup END
+endif
+
+if executable('clangd')
+    " sudo pacman -S clang-tools-extra
+    augroup LspC
+        au!
+        autocmd User lsp_setup call lsp#register_server({
+                \ 'name': 'clangd',
+                \ 'cmd': {server_info->['clangd', '-background-index']},
+                \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
+                \ })
+        autocmd FileType c setlocal omnifunc=lsp#complete
+    augroup END
+endif
+
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+let g:lsp_signs_enabled = 1         " enable signs
+let g:lsp_diagnostics_echo_cursor = 1 " enable echo under cursor when in normal mode
+let g:lsp_highlights_enabled = 1
+let g:lsp_textprop_enabled = 0
+let g:lsp_signs_error = {'text': '✗'}
+let g:lsp_signs_warning = {'text': '⚠ '}
+let g:lsp_signs_information = {'text': '▶'}
