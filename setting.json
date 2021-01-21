@@ -1,0 +1,136 @@
+{
+"vim.visualModeKeyBindings": [
+{
+"before": ["+", "+"],
+"after": ["<plug>", "N", "E", "R", "D", "C", "o", "m", "m", "e", "n", "t", "e", "r", "T", "o", "g", "g", "l", "e"]
+}
+],
+"vim.normalModeKeyBindingsNonRecursive": [
+{
+"before": ["<C-n>"],
+"commands": [":NERDTreeToggle"]
+},
+{
+"before": ["+", "+"],
+"after": ["<plug>", "N", "E", "R", "D", "C", "o", "m", "m", "e", "n", "t", "e", "r", "T", "o", "g", "g", "l", "e"]
+},
+{
+"before": ["<leader>", "d"],
+"commands": [":sh"]
+},
+{
+"before": ["<leader>", "w"],
+"commands": [":mksession"]
+},
+{
+"before": ["<leader>", "f"],
+"commands": [":LspDocumentDiagnostic"]
+},
+{
+"before": ["<C-Down>"],
+"after": ["<ESC>", ":", "t", "a", "b", "n", "e", "x", "t", "<CR>"]
+},
+{
+"before": ["<C-Up>"],
+"commands": [":tabprevious"]
+},
+{
+"before": ["<C-RIGHT>"],
+"commands": [":bn"]
+},
+{
+"before": ["<C-LEFT>"],
+"commands": [":bp"]
+},
+{
+"before": ["<C-j>"],
+"after": ["<C-W>", "j"]
+},
+{
+"before": ["<C-k>"],
+"after": ["<C-W>", "k"]
+},
+{
+"before": ["<C-h>"],
+"after": ["<C-W>", "h"]
+},
+{
+"before": ["<C-l>"],
+"after": ["<C-W>", "l"]
+},
+{
+"before": ["Q"],
+"after": ["@", "q"]
+},
+{
+"before": ["<F5>"],
+"commands": [":make"]
+},
+{
+"before": ["-"],
+"after": ["$"]
+},
+{
+"before": ["j"],
+"after": ["g", "j"]
+},
+{
+"before": ["k"],
+"after": ["g", "k"]
+},
+{
+"before": ["Y"],
+"after": ["y", "$"]
+},
+{
+"before": ["c", "p"],
+"after": ["y", "a", "p", "}", "p"]
+},
+{
+"before": ["Z", "A"],
+"commands": [":qa"]
+},
+{
+"before": [";"],
+"after": [":"]
+},
+{
+"before": [":"],
+"after": [";"]
+}
+],
+"vim.visualModeKeyBindingsNonRecursive": [
+{
+"before": ["<Tab>"],
+"after": [">", "g", "v"]
+},
+{
+"before": ["<S-Tab>"],
+"after": ["<", "g", "v"]
+},
+{
+"before": ["j", "k"],
+"after": ["<ESC>"]
+}
+],
+"vim.insertModeKeyBindingsNonRecursive": [
+{
+"before": ["<S-Tab>"],
+"after": ["<C-d>"]
+},
+{
+"before": ["j", "k"],
+"after": ["<ESC>"]
+}
+],
+"workbench.colorTheme": "Visual Studio 2019 Dark",
+"files.associations": {
+    "*.go": "go"
+},
+"window.zoomLevel": 1,
+"explorer.compactFolders": false,
+"editor.wordWrap": "on",
+"vim.commandLineModeKeyBindingsNonRecursive": [
+    
+]
+}
